@@ -1,14 +1,14 @@
-# Go Utils
+# Go Util
 
-`Go Utils` is a collection of packages I use on my Golang projects. The packages available are:
+`Go Util` is a collection of packages I use on my Golang projects. The packages available are:
 
-* `go-utils/asyncer`
-* `go-utils/auth`
-* `go-utils/filesystem`
-* `go-utils/identifier`
-* `go-utils/logger`
+* `go-util/asyncer`
+* `go-util/auth`
+* `go-util/filesystem`
+* `go-util/identifier`
+* `go-util/logger`
 
 ## Installation
 ```
-go get github.com/allenakinkunle/go-utils
+go get github.com/allenakinkunle/go-util
 ```
