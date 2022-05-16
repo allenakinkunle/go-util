@@ -1,7 +1,9 @@
 package logger
 
 import (
+	"context"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/hibiken/asynq"
 	"go.uber.org/zap"
 	"net/http"
 	"time"
@@ -45,5 +47,25 @@ func (z *zapLogger) RequestLogger() func(next http.Handler) http.Handler {
 			next.ServeHTTP(ww, r)
 		}
 		return http.HandlerFunc(fn)
+	}
+}
+
+func (z *zapLogger) TaskLogger() func(handler asynq.Handler) asynq.Handler {
+	return func(next asynq.Handler) asynq.Handler {
+		fn := func(ctx context.Context, task *asynq.Task) error {
+			t1 := time.Now()
+			defer func() {
+				z.logger.Info("Task",
+					zap.String("name", task.Type()),
+					zap.Int("time", int(time.Since(t1).Milliseconds())),
+				)
+			}()
+			err := next.ProcessTask(ctx, task)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+		return asynq.HandlerFunc(fn)
 	}
 }
